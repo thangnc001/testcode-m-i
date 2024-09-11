@@ -1,0 +1,98 @@
+import { useState } from 'react'
+import { Calendar } from '@/components/ui/calendar'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+
+export default function MenstrualTracker() {
+  const [date, setDate] = useState<Date | undefined>(new Date())
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-pink-100 to-peach-200 p-6">
+      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="p-6 space-y-6">
+          <h1 className="text-2xl font-bold text-center text-pink-600">Theo dõi chu kỳ kinh nguyệt</h1>
+          
+          {/* Date Selection */}
+          <div>
+            <h2 className="text-lg font-semibold mb-2">Ngày: {date?.toLocaleDateString('vi-VN', { day: 'numeric', month: 'short', year: 'numeric' })}</h2>
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              className="rounded-md border"
+            />
+          </div>
+
+          {/* Tracking Sections */}
+          <div className="space-y-4">
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder="Lưu lượng kinh nguyệt" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="light">Nhẹ</SelectItem>
+                <SelectItem value="medium">Trung bình</SelectItem>
+                <SelectItem value="heavy">Nặng</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder="Cảm giác" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="normal">Bình thường</SelectItem>
+                <SelectItem value="dry">Khô</SelectItem>
+                <SelectItem value="sensitive">Nhạy cảm</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder="Đặc điểm dịch tiết" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">Không có</SelectItem>
+                <SelectItem value="light">Nhẹ</SelectItem>
+                <SelectItem value="heavy">Nhiều</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Significant Day Toggle */}
+          <div className="flex items-center space-x-2">
+            <Switch id="significant-day" />
+            <label htmlFor="significant-day" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Đây là một ngày quan trọng
+            </label>
+          </div>
+
+          {/* Notes Field */}
+          <Textarea placeholder="Nhập ghi chú của bạn ở đây..." />
+
+          {/* Submit Button */}
+          <Button className="w-full bg-pink-500 hover:bg-pink-600 text-white">
+            Ghi Nhận Quan Sát
+          </Button>
+        </div>
+
+        {/* History Tabs */}
+        <Tabs defaultValue="log" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="log">Ghi Chép</TabsTrigger>
+            <TabsTrigger value="calendar">Lịch</TabsTrigger>
+          </TabsList>
+          <TabsContent value="log" className="p-4">
+            <p className="text-sm text-gray-600">Lịch sử ghi chép sẽ hiển thị ở đây.</p>
+          </TabsContent>
+          <TabsContent value="calendar" className="p-4">
+            <p className="text-sm text-gray-600">Lịch tổng quan sẽ hiển thị ở đây.</p>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  )
+}
